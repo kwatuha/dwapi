@@ -901,7 +901,7 @@ FROM   ndwr_all_patients"|dwhstage|1|PatientExtract|1|a6221aa5-0e85-11e8-ba89-0e
 	   null as lastWAB,
 	   null as lastWABDate
 	   
-FROM   ndw_base_line"|dwhstage|0|PatientBaselineExtract|3|a6221aa5-0e85-11e8-ba89-0ed5f89f718b
+FROM   ndwr_base_line"|dwhstage|0|PatientBaselineExtract|3|a6221aa5-0e85-11e8-ba89-0ed5f89f718b
 953cdf46-23bb-11e9-ab14-d663bd873d93|Patient Labs|NDWH|a6221857-0e85-11e8-ba89-0ed5f89f718b|"SELECT patientid,
        patientpk,
        facilityid,
@@ -962,7 +962,7 @@ FROM   ndwr_patient_pharmacy"|dwhstage|0|PatientPharmacyExtract|6|a6221aa5-0e85-
        familyplanningmethod,
        pwp,
        gestationage,
-       if(nextappointmentdate,nextappointmentdate,null) as nextappointmentdate,
+       if(nextappointmentdate,nextappointmentdate,date_add(visitDate,interval 21 day)) as nextappointmentdate,
        substitutionfirstlinereg,
 	   if(SecondlineRegimenChangeDate,SecondlineRegimenChangeDate,null) as SecondlineRegimenChangeDate,
 	   if(SubstitutionSecondlineRegimenDate,SubstitutionSecondlineRegimenDate,null) as SubstitutionSecondlineRegimenDate,
