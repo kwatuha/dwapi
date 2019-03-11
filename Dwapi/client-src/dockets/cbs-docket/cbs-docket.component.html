@@ -17,7 +17,8 @@
                 class="green-btn"></button>
         </div>
         <div class="ui-toolbar-group-right">
-            <button pButton type="button" [disabled]="!canSend" (click)="send()" label="Send Warehouse" icon="ui-icon-cloud-upload" class="blue-btn"></button>
+            <!-- <button pButton type="button" [disabled]="!canSend" (click)="send()" label="Send Warehouse" icon="ui-icon-cloud-upload" class="blue-btn"></button> -->
+            <button pButton type="button"  (click)="send()" label="Send Warehouse 2" icon="ui-icon-cloud-upload" class="blue-btn"></button>
         </div>
     </p-toolbar>
     <p-dataTable [value]="extracts" selectionMode="single" resizableColumns="true">

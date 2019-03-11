@@ -815,18 +815,18 @@ FROM   ndwr_patient_status"|dwhstage|0|PatientStatusExtract|4|a6221aa5-0e85-11e8
        null as dateimported,
        facilityid
 FROM   ndwr_art_patients"|dwhstage|0|PatientArtExtract|2|a6221aa5-0e85-11e8-ba89-0ed5f89f718b
-953cdce4-23bb-11e9-ab14-d663bd873d93|All Patients|NDWH|a6221857-0e85-11e8-ba89-0ed5f89f718b|"SELECT patientid,
+953cdce4-23bb-11e9-ab14-d663bd873d93|All Patients|NDWH|a6221857-0e85-11e8-ba89-0ed5f89f718b|"SELECT distinct patientid,
        patientpk,
        sitecode,
        facilityname,
        gender,
        IF(dob, dob, NULL) AS DOB,
-       IF(registrationdate, registrationdate, NULL) as registrationdate,
-       if(registrationatccc,registrationatccc,null) as registrationatccc,
+       IF(registrationdate='1900-01-01','1997-01-01', registrationdate) as registrationdate,
+       if(registrationatccc='1900-01-01','1997-01-01',registrationatccc) as registrationatccc,
        if(registrationatpmtct,registrationatpmtct,null) AS registrationatpmtct,
        IF(registrationattbclinic,registrationattbclinic,NULL) AS registrationattbclinic,
        patientsource,
-       region,
+       facilityname as region,
        district,
        village,
        contactrelation,
@@ -981,7 +981,7 @@ FROM   ndwr_patient_pharmacy"|dwhstage|0|PatientPharmacyExtract|6|a6221aa5-0e85-
 	   null as SubstitutionSecondlineRegimenReason,
 	   null as SecondLineRegimenChangeReason  FROM   ndwr_all_patient_visits"|dwhstage|0|PatientVisitExtract|7|a6221aa5-0e85-11e8-ba89-0ed5f89f718b
 
-96226eb4-0e85-11e8-ba89-6fb398c5f449|Patient Adverse Events|NDWH|a6221857-0e85-11e8-ba89-0ed5f89f718b|"SELECT '' AS PatientID, 
+96226eb4-0e85-11e8-ba89-6fb398c5f449|Patient Adverse Events|NDWH|a6221857-0e85-11e8-ba89-0ed5f89f718b|"SELECT '' AS PatientID,
        '' AS PatientPK, 
        '' AS SiteCode,
 	   '' AS FacilityID, 

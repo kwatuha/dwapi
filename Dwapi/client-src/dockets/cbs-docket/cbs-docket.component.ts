@@ -221,6 +221,7 @@ export class CbsDocketComponent implements OnInit, OnDestroy {
                     this.messages.push({severity: 'success', summary: 'load was successful '});
                     this.updateEvent();
                     this.loadDetails();
+                    this.canSend = true;
                 }
             );
 
