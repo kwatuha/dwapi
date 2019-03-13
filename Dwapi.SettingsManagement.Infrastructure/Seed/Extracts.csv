@@ -786,20 +786,27 @@ FROM   ndwr_patient_status"|dwhstage|0|PatientStatusExtract|4|a6221aa5-0e85-11e8
        agelastvisit,
        sitecode,
        facilityname,
-       if(registrationdate,registrationdate,null) as registrationdate,
-       patientsource,
+       if(registrationdate,if(registrationdate='1900-01-01','1997-01-01',registrationdate),null) as registrationdate,
+       if(registrationdate='1900-01-01','Transfer-in',patientsource) as patientsource,
        gender,
-       if(startartdate,startartdate,null) as startartdate,
-       if(previousartstartdate,previousartstartdate,NULL) as previousartstartdate,
+        case
+        when  startartdate <= registrationdate then registrationdate	
+		  when  startartdate <= dob then DATE_ADD(dob, INTERVAL 10 DAY)	
+        else startartdate
+ 		end as startartdate, 
+       case
+		 when  previousartstartdate <= dob then DATE_ADD(dob, INTERVAL 10 DAY)	else previousartstartdate
+ 		end as previousartstartdate,
+
        previousartregimen,
        if(startartatthisfacility,startartatthisfacility,null) AS startartatthisfacility,
-       startregimen,
-       startregimenline,
+       if(startregimen,startregimen,'unknown') as startregimen, 
+       if(startregimenline,startregimenline,1) as startregimenline,
        if(lastartdate,lastartdate,null) AS lastartdate,
-       lastregimen,
-       lastregimenline,
+       if(lastregimen,lastregimen,'unknown') as lastregimen, 
+       if(lastregimenline,lastregimenline,1) as LastRegimenLine,
        duration,
-       IF(expectedreturn,expectedreturn,NULL) AS expectedreturn,
+       IF(expectedreturn,expectedreturn,date_add(lastartdate,interval 30 day)) AS expectedreturn,
        provider,
        IF(lastvisit,lastvisiT,NULL) AS lastvisit,
        encounter_type,
@@ -814,14 +821,16 @@ FROM   ndwr_patient_status"|dwhstage|0|PatientStatusExtract|4|a6221aa5-0e85-11e8
        lastregimen_orig,
        null as dateimported,
        facilityid
-FROM   ndwr_art_patients"|dwhstage|0|PatientArtExtract|2|a6221aa5-0e85-11e8-ba89-0ed5f89f718b
+FROM   ndwr_art_patients group by patientid"|dwhstage|0|PatientArtExtract|2|a6221aa5-0e85-11e8-ba89-0ed5f89f718b
 953cdce4-23bb-11e9-ab14-d663bd873d93|All Patients|NDWH|a6221857-0e85-11e8-ba89-0ed5f89f718b|"SELECT distinct patientid,
        patientpk,
        sitecode,
        facilityname,
        gender,
        IF(dob, dob, NULL) AS DOB,
-       IF(registrationdate='1900-01-01','1997-01-01', registrationdate) as registrationdate,
+       case
+		 when  registrationdate <= dob then DATE_ADD(dob, INTERVAL 10 DAY)	else registrationdate
+ 		end as registrationdate,
        if(registrationatccc='1900-01-01','1997-01-01',registrationatccc) as registrationatccc,
        if(registrationatpmtct,registrationatpmtct,null) AS registrationatpmtct,
        IF(registrationattbclinic,registrationattbclinic,NULL) AS registrationattbclinic,
@@ -833,9 +842,9 @@ FROM   ndwr_art_patients"|dwhstage|0|PatientArtExtract|2|a6221aa5-0e85-11e8-ba89
        lastvisit,
        maritalstatus,
        educationlevel,
-       IF(dateconfirmedhivpositive,dateconfirmedhivpositive,NULL) AS dateconfirmedhivpositive,
-       IF(previousartexposure,previousartexposure,NULL) as previousartexposure,
-       if(previousartstartdate,previousartstartdate,null) as previousartstartdate,
+       if(dateconfirmedhivpositive,if(dateconfirmedhivpositive='1900-01-01','1997-01-01',dateconfirmedhivpositive),null)  AS dateconfirmedhivpositive,
+       if(previousartexposure,if(previousartexposure='1900-01-01','1997-01-01',previousartexposure),null)  as previousartexposure,
+       if(previousartstartdate,if(previousartstartdate='1900-01-01','1997-01-01',previousartstartdate),null) as previousartstartdate,
        emr,
        project,
        facilityid,
